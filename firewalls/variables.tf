@@ -55,5 +55,5 @@ variable "vm_user" {
   default = "test"
 }
 
-variable "bucket_name" { e
+variable "bucket_name" {
 }
