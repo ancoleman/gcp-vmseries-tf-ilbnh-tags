@@ -88,7 +88,7 @@ module "vpc_spoke2" {
     },
     "spoke2-${var.regions[1]}" = {
       region = var.regions[1],
-      cidr   = var.cidrs_spoke[1]
+      cidr   = var.cidrs_spoke2[1]
     }
   }
 }
