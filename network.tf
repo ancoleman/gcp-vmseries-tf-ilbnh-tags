@@ -56,3 +56,21 @@ module "vpc_trust" {
     }
   }
 }
+
+module "vpc_trust" {
+  source               = "./modules/google_vpc/"
+  vpc                  = "trust-vpc"
+  delete_default_route = true
+  allowed_sources      = ["0.0.0.0/0"]
+
+  subnets = {
+    "trust-${var.regions[0]}" = {
+      region = var.regions[0],
+      cidr   = var.cidrs_trust[0]
+    },
+    "trust-${var.regions[1]}" = {
+      region = var.regions[1],
+      cidr   = var.cidrs_trust[1]
+    }
+  }
+}

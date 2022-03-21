@@ -5,10 +5,6 @@ username = sys.argv[1]
 passw = sys.argv[2]
 hostname = sys.argv[3]
 student_id = sys.argv[4]
-# username = os.environ["panorama_username"]
-# passw = os.environ["panorama_password"]
-# hostname = os.environ["panorama_host"]
-# student_id = os.environ["panorama_student_id"]
 # destroy = True
 # create = False
 pano = panorama.Panorama(hostname=hostname, api_password=passw, api_username=username)

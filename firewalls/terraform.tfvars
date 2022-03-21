@@ -1,6 +1,6 @@
-project_id                = ""
+project_id                = data.terraform_remote_state.gcsbucket.outputs.project_id
 #public_key_path           = "~/.ssh/gcp-demo.pub"
-fw_image_name             = "vmseries-flex-byol-1010"
+fw_image_name             = "vmseries-flex-byol-1013"
 
 mgmt_sources  = ["0.0.0.0/0"]
 regions       = ["us-east1", "us-west1"]
@@ -14,3 +14,4 @@ panorama_host        = "3.138.239.111"
 dg_name              = ""
 tmpl_stck_name       = ""
 sft_license_auth_key = ""
+bucket_name = data.terraform_remote_state.gcsbucket.outputs.bucket_name
