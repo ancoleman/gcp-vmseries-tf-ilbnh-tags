@@ -47,7 +47,7 @@ resource "panos_panorama_ethernet_interface" "eth2" {
   enable_dhcp               = true
   create_dhcp_default_route = true
   dhcp_default_route_metric = 10
-  management_profile = panos_management_profile.healthcheck.name
+  management_profile        = panos_panorama_management_profile.healthcheck.name
 }
 
 resource "panos_panorama_zone" "trust" {
@@ -69,10 +69,11 @@ resource "panos_panorama_virtual_router" "example" {
   ]
 }
 
-resource "panos_management_profile" "healthcheck" {
-  name = "health-check-https"
-  https = true
-  permitted_ips = ["130.211.0.0/22","35.191.0.0/16"]
+resource "panos_panorama_management_profile" "healthcheck" {
+  name          = "health-check-https"
+  template      = panos_panorama_template.this.name
+  permitted_ips = ["130.211.0.0/22", "35.191.0.0/16"]
+  https         = true
 }
 
 resource "panos_panorama_security_rule_group" "this" {
@@ -94,24 +95,6 @@ resource "panos_panorama_security_rule_group" "this" {
     log_setting           = "default"
   }
 }
-
-
-#resource "null_resource" "panorama-python" {
-#  depends_on = [panos_panorama_template_stack.this, panos_device_group.this]
-#
-#  provisioner "local-exec" {
-#    when        = create
-#    command     = "panorama.py"
-#    interpreter = ["python3"]
-#    environment = {
-#      panorama_host       = var.panorama_host
-#      panorama_username       = var.panorama_username
-#      panorama_password   = var.panorama_password
-#      panorama_student_id = random_id.student.id
-#      panorama_destroy    = "False"
-#    }
-#  }
-#}
 
 output "lab_info" {
   value = {
