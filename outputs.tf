@@ -53,3 +53,7 @@ output "project_id" {
 output "bucket_name" {
   value = var.bucket_name
 }
+
+output "vm_user" {
+  value = var.vm_user
+}
