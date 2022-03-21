@@ -47,6 +47,7 @@ resource "panos_panorama_ethernet_interface" "eth2" {
   enable_dhcp               = true
   create_dhcp_default_route = true
   dhcp_default_route_metric = 10
+  management_profile = panos_management_profile.healthcheck.name
 }
 
 resource "panos_panorama_zone" "trust" {
@@ -68,6 +69,11 @@ resource "panos_panorama_virtual_router" "example" {
   ]
 }
 
+resource "panos_management_profile" "healthcheck" {
+  name = "health-check-https"
+  https = true
+  permitted_ips = ["130.211.0.0/22","35.191.0.0/16"]
+}
 
 resource "panos_panorama_security_rule_group" "this" {
   position_keyword = "bottom"

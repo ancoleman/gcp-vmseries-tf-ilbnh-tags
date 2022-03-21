@@ -59,7 +59,7 @@ module "vpc_trust" {
 
 module "vpc_spoke1" {
   source               = "./modules/google_vpc/"
-  vpc                  = "trust-vpc"
+  vpc                  = "spoke1-vpc"
   delete_default_route = true
   allowed_sources      = ["0.0.0.0/0"]
 
@@ -77,7 +77,7 @@ module "vpc_spoke1" {
 
 module "vpc_spoke2" {
   source               = "./modules/google_vpc/"
-  vpc                  = "trust-vpc"
+  vpc                  = "spoke2-vpc"
   delete_default_route = true
   allowed_sources      = ["0.0.0.0/0"]
 
