@@ -19,6 +19,8 @@ def build_access_domain():
                       "<member>TPL-STACK-{}</member></templates>" \
                       "<shared-access>write</shared-access>".format(student_id, student_id, student_id)
     pano.xapi.set(xpath=access_domain_xp, element=access_domain_e)
+    print('Built Access Domain: ACD-{}'.format(student_id))
+
 def build_admin_user():
     admin_password = pano.xapi.op('request password-hash password "{}"'.format(student_id), cmd_xml=True)
     r = admin_password
@@ -34,6 +36,7 @@ def build_admin_user():
     template_admin_add_e = '<permissions><role-based><superuser>yes</superuser></role-based></permissions><phash>{}</phash>'.format(phash)
 
     pano.xapi.set(xpath=template_admin_add_xp, element=template_admin_add_e)
+    print('Built Admin User: {}'.format(student_id))
 
 def do_commit():
     try:
