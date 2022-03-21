@@ -50,3 +50,4 @@ variable fw_region1_bootstrap_path {}
 variable "panorama_host" {}
 variable "panorama_username" {}
 variable "panorama_password" {}
+variable "bucket_name" {}
