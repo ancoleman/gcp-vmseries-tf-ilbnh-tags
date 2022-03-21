@@ -1,6 +1,5 @@
 variable project_id {
   description = "GCP project ID"
-  default = data.terraform_remote_state.gcsbucket.outputs.project_id
 }
 
 # variable auth_file {
@@ -56,6 +55,5 @@ variable "vm_user" {
   default = "test"
 }
 
-variable "bucket_name" {
-  default = data.terraform_remote_state.gcsbucket.outputs.bucket_name
+variable "bucket_name" { e
 }
