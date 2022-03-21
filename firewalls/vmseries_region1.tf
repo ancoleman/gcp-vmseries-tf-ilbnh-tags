@@ -1,16 +1,16 @@
 # --------------------------------------------------------------------------------------------------------------------------
 # Create bootstrap bucket for VM-Series, internal load balancer, and route to load balancer forwarding rule.
 
-module "bootstrap_region1" {
-  source        = "./modules/google_bootstrap/"
-  bucket_name   = "${local.prefix_region1}-bootstrap"
-  file_location = var.fw_region1_bootstrap_path
-  config        = ["init-cfg.txt", "bootstrap.xml"]
-  authcodes     = var.authcodes
-}
+#module "bootstrap_region1" {
+#  source        = "./modules/google_bootstrap/"
+#  bucket_name   = "${local.prefix_region1}-bootstrap"
+#  file_location = var.fw_region1_bootstrap_path
+#  config        = ["init-cfg.txt", "bootstrap.xml"]
+#  authcodes     = var.authcodes
+#}
 
 module "vmseries_region1" {
-  source = "./modules/vmseries_unmanaged_ig/"
+  source = "../modules/vmseries_unmanaged_ig/"
   image_name            = var.fw_image_name
   machine_type          = var.fw_machine_type
   create_instance_group = true
@@ -18,9 +18,19 @@ module "vmseries_region1" {
 
   metadata = {
     mgmt-interface-swap                  = "enable"
-    vmseries-bootstrap-gce-storagebucket = module.bootstrap_region1.bucket_name
     serial-port-enable                   = true
     ssh-keys                             = fileexists(var.public_key_path) ? "admin:${file(var.public_key_path)}" : ""
+    type                                 = "dhcp-client"
+    op-command-modes                     = "mgmt-interface-swap"
+    plugin-op-commands                   = "panorama-licensing-mode-on"
+    auth-key                             = var.sft_license_auth_key
+    panorama-server                      = var.panorama_host
+    dgname                               = var.dg_name
+    tplname                              = var.tmpl_stck_name
+    dhcp-send-hostname                   = "yes"
+    dhcp-send-client-id                  = "yes"
+    dhcp-accept-server-hostname          = "yes"
+    dhcp-accept-server-domain            = "yes"
   }
 
   instances = {
@@ -28,7 +38,7 @@ module "vmseries_region1" {
     vmseries01 = {
       name             = "${local.prefix_region1}-vmseries01"
       zone             = data.google_compute_zones.region1.names[0]
-      bootstrap_bucket = module.bootstrap_region1.bucket_name
+#      bootstrap_bucket = module.bootstrap_region1.bucket_name
       network_interfaces = [
         {
           subnetwork = module.vpc_untrust.subnet_self_link["untrust-${var.regions[1]}"]

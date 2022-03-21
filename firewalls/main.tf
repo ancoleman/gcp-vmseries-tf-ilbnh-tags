@@ -1,19 +1,7 @@
 # --------------------------------------------------------------------------------------------------------------------------
 # Setup Terraform providers, pull the regions availability zones, and create naming prefix as local variable
 
-terraform {
-  required_providers {
-    panos = {
-      source = "paloaltonetworks/panos"
-    }
-  }
-}
-
-provider "panos" {
-  username = var.panorama_username
-  password = var.panorama_password
-  hostname = var.panorama_host
-}
+terraform {}
 
 provider "google" {
   #credentials = var.auth_file
