@@ -57,20 +57,38 @@ module "vpc_trust" {
   }
 }
 
-module "vpc_trust" {
+module "vpc_spoke1" {
   source               = "./modules/google_vpc/"
   vpc                  = "trust-vpc"
   delete_default_route = true
   allowed_sources      = ["0.0.0.0/0"]
 
   subnets = {
-    "trust-${var.regions[0]}" = {
+    "spoke1-${var.regions[0]}" = {
       region = var.regions[0],
-      cidr   = var.cidrs_trust[0]
+      cidr   = var.cidrs_spoke1[0]
     },
-    "trust-${var.regions[1]}" = {
+    "spoke1-${var.regions[1]}" = {
       region = var.regions[1],
-      cidr   = var.cidrs_trust[1]
+      cidr   = var.cidrs_spoke1[1]
+    }
+  }
+}
+
+module "vpc_spoke2" {
+  source               = "./modules/google_vpc/"
+  vpc                  = "trust-vpc"
+  delete_default_route = true
+  allowed_sources      = ["0.0.0.0/0"]
+
+  subnets = {
+    "spoke2-${var.regions[0]}" = {
+      region = var.regions[0],
+      cidr   = var.cidrs_spoke2[0]
+    },
+    "spoke2-${var.regions[1]}" = {
+      region = var.regions[1],
+      cidr   = var.cidrs_spoke[1]
     }
   }
 }

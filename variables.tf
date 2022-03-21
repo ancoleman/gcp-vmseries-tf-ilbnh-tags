@@ -36,6 +36,14 @@ variable cidrs_trust {
   type = list(string)
 }
 
+variable cidrs_spoke1 {
+  type = list(string)
+}
+
+variable cidrs_spoke2 {
+  type = list(string)
+}
+
 variable public_key_path {
   description = "Local path to public SSH key.  If you do not have a public key, run >> ssh-keygen -f ~/.ssh/demo-key -t rsa -C admin"
 }
