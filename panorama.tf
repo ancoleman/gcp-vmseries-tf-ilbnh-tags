@@ -77,7 +77,7 @@ resource "panos_panorama_management_profile" "healthcheck" {
 }
 
 resource "panos_panorama_security_rule_group" "this" {
-  position_keyword   = "above"
+  position_keyword   = "before"
   position_reference = panos_panorama_security_rule_group.deny.rule.0.name
   device_group       = panos_device_group.this.name
   rule {
