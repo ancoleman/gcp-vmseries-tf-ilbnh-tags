@@ -77,8 +77,24 @@ resource "panos_panorama_management_profile" "healthcheck" {
 }
 
 resource "panos_panorama_security_rule_group" "this" {
-  position_keyword = "bottom"
-  device_group     = panos_device_group.this.name
+  position_keyword   = "above"
+  position_reference = panos_panorama_security_rule_group.deny.rule.0.name
+  device_group       = panos_device_group.this.name
+  rule {
+    name                  = "gcp-health-checks"
+    description           = "LB Healthchecks"
+    source_zones          = [panos_panorama_zone.trust.name]
+    source_addresses      = ["any"]
+    source_users          = ["any"]
+    hip_profiles          = ["any"]
+    destination_zones     = ["any"]
+    destination_addresses = ["any"]
+    applications          = ["any"]
+    services              = ["service-https"]
+    categories            = ["any"]
+    action                = "allow"
+    log_setting           = "default"
+  }
   rule {
     name                  = "student-gcp-trust-to-untrust"
     description           = "Temporary Permit Any on GWLB main interface"
@@ -94,7 +110,43 @@ resource "panos_panorama_security_rule_group" "this" {
     action                = "allow"
     log_setting           = "default"
   }
+  rule {
+    name                  = "student-gcp-untrust-to-trust"
+    description           = "Temporary Permit Any on GWLB main interface"
+    source_zones          = [panos_panorama_zone.untrust.name]
+    source_addresses      = ["any"]
+    source_users          = ["any"]
+    hip_profiles          = ["any"]
+    destination_zones     = [panos_panorama_zone.trust.name]
+    destination_addresses = ["any"]
+    applications          = ["ssh", "web-browsing"]
+    services              = ["any"]
+    categories            = ["any"]
+    action                = "allow"
+    log_setting           = "default"
+  }
 }
+
+resource "panos_panorama_security_rule_group" "deny" {
+  position_keyword = "bottom"
+  device_group     = panos_device_group.this.name
+  rule {
+    name                  = "deny-all"
+    description           = "Deny All"
+    source_zones          = ["any"]
+    source_addresses      = ["any"]
+    source_users          = ["any"]
+    hip_profiles          = ["any"]
+    destination_zones     = ["any"]
+    destination_addresses = ["any"]
+    applications          = ["any"]
+    services              = ["any"]
+    categories            = ["any"]
+    action                = "deny"
+    log_setting           = "default"
+  }
+}
+
 
 output "lab_info" {
   value = {

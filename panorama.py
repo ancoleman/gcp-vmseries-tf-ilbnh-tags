@@ -28,7 +28,7 @@ def build_admin_user():
     pano.xapi.set(xpath=admin_add_xp, element=admin_add_e)
 
     # Build Admin user on local template
-    template_admin_add_xp = "/config/devices/entry[@name='localhost.localdomain']/template/entry[@name='TPL-BASE-{}']/config/mgt-config/users/entry[@name='{}']".format(student_id, student_id)
+    template_admin_add_xp = "/config/devices/entry[@name='localhost.localdomain']/template/entry[@name='TPL-B-{}']/config/mgt-config/users/entry[@name='{}']".format(student_id, student_id)
     template_admin_add_e = '<permissions><role-based><superuser>yes</superuser></role-based></permissions><phash>{}</phash>'.format(phash)
 
     pano.xapi.set(xpath=template_admin_add_xp, element=template_admin_add_e)

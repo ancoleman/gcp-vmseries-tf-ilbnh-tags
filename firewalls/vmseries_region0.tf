@@ -21,7 +21,6 @@ module "vmseries_region0" {
     serial-port-enable                   = true
     ssh-keys                             = fileexists(var.public_key_path) ? "admin:${file(var.public_key_path)}" : ""
     type                                 = "dhcp-client"
-    op-command-modes                     = "mgmt-interface-swap"
     plugin-op-commands                   = "panorama-licensing-mode-on"
     auth-key                             = var.sft_license_auth_key
     panorama-server                      = var.panorama_host
@@ -116,6 +115,6 @@ resource "google_compute_health_check" "hc" {
   name = "${local.prefix_region0}-hc"
 
   tcp_health_check {
-    port = 80
+    port = 443
   }
 }
