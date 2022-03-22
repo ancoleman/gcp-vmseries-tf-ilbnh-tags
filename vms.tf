@@ -38,7 +38,7 @@ resource "google_compute_instance" "region0" {
   network_interface {
     #    subnetwork = module.vpc_trust.subnet_self_link["trust-${var.regions[0]}"]
     subnetwork = module.vpc_spoke1.subnet_self_link["spoke1-${var.regions[0]}"]
-    network_ip = cidrhost(var.cidrs_trust[0], 10)
+    network_ip = cidrhost(var.cidrs_spoke1[0], 10)
   }
 
   boot_disk {
@@ -70,7 +70,7 @@ resource "google_compute_instance" "region1" {
   network_interface {
     #    subnetwork = module.vpc_trust.subnet_self_link["trust-${var.regions[1]}"]
     subnetwork = module.vpc_spoke2.subnet_self_link["spoke2-${var.regions[1]}"]
-    network_ip = cidrhost(var.cidrs_trust[1], 10)
+    network_ip = cidrhost(var.cidrs_spoke2[1], 10)
   }
 
   boot_disk {
