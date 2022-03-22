@@ -32,7 +32,18 @@ def build_admin_user():
     template_admin_add_e = '<permissions><role-based><superuser>yes</superuser></role-based></permissions><phash>{}</phash>'.format(phash)
 
     pano.xapi.set(xpath=template_admin_add_xp, element=template_admin_add_e)
-    print('Built Admin User: {}'.format(student_id))
+    print('Built DG and Template Admin User: {}'.format(student_id))
+
+def build_admin_panorama_user():
+    admin_password = pano.xapi.op('request password-hash password "{}"'.format(student_id), cmd_xml=True)
+    r = admin_password
+    phash = r.find(".//phash").text
+    admin_add_xp = "/config/mgt-config/users/entry[@name='{}-admin']".format(student_id)
+    admin_add_e = '<permissions><role-based><superuser>yes</superuser></role-based>' \
+                  '</permissions><phash>{}</phash>'.format(student_id, phash)
+    pano.xapi.set(xpath=admin_add_xp, element=admin_add_e)
+
+    print('Built Admin User: {}-admin'.format(student_id))
 
 def do_commit():
     try:
@@ -56,6 +67,7 @@ def main():
     #     pano.xapi.delete(xpath=admin_add_xp)
     build_access_domain()
     build_admin_user()
+    build_admin_panorama_user()
     while True:
         try:
             completion = panorama_commit()
