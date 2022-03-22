@@ -84,7 +84,7 @@ resource "panos_panorama_security_rule_group" "this" {
     name                  = "gcp-health-checks"
     description           = "LB Healthchecks"
     source_zones          = [panos_panorama_zone.trust.name]
-    source_addresses      = ["any"]
+    source_addresses      = ["gcp_healthchecks"]
     source_users          = ["any"]
     hip_profiles          = ["any"]
     destination_zones     = ["any"]

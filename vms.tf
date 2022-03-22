@@ -1,17 +1,17 @@
 # --------------------------------------------------------------------------------------------------------------------------
 # Creates 2 Ubuntu GCE instances.  These instances are used for testing purposes.
 
-variable vm_image {
+variable "vm_image" {
   default = "ubuntu-os-cloud/ubuntu-1604-lts"
 }
 
-variable vm_type {
+variable "vm_type" {
   default = "f1-micro"
 }
 
-variable vm_user {}
+variable "vm_user" {}
 
-variable vm_scopes {
+variable "vm_scopes" {
   type = list(string)
 
   default = [
@@ -36,7 +36,8 @@ resource "google_compute_instance" "region0" {
   }
 
   network_interface {
-    subnetwork = module.vpc_trust.subnet_self_link["trust-${var.regions[0]}"]
+    #    subnetwork = module.vpc_trust.subnet_self_link["trust-${var.regions[0]}"]
+    subnetwork = module.vpc_spoke1.subnet_self_link["spoke1-${var.regions[0]}"]
     network_ip = cidrhost(var.cidrs_trust[0], 10)
   }
 
@@ -67,7 +68,8 @@ resource "google_compute_instance" "region1" {
   }
 
   network_interface {
-    subnetwork = module.vpc_trust.subnet_self_link["trust-${var.regions[1]}"]
+    #    subnetwork = module.vpc_trust.subnet_self_link["trust-${var.regions[1]}"]
+    subnetwork = module.vpc_spoke2.subnet_self_link["spoke2-${var.regions[1]}"]
     network_ip = cidrhost(var.cidrs_trust[1], 10)
   }
 
