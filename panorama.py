@@ -40,7 +40,7 @@ def build_admin_panorama_user():
     phash = r.find(".//phash").text
     admin_add_xp = "/config/mgt-config/users/entry[@name='{}-admin']".format(student_id)
     admin_add_e = '<permissions><role-based><superuser>yes</superuser></role-based>' \
-                  '</permissions><phash>{}</phash>'.format(student_id, phash)
+                  '</permissions><phash>{}</phash>'.format(phash)
     pano.xapi.set(xpath=admin_add_xp, element=admin_add_e)
 
     print('Built Admin User: {}-admin'.format(student_id))
