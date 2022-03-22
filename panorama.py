@@ -11,8 +11,8 @@ pano = panorama.Panorama(hostname=hostname, api_password=passw, api_username=use
 def build_access_domain():
     access_domain_xp = "/config/mgt-config/access-domain/entry[@name='ACD-{}']".format(student_id)
     access_domain_e = "<device-groups><member>DG-{}</member></device-groups><templates>" \
-                      "<member>TPL-COMMON</member><member>TPL-BASE-{}</member>" \
-                      "<member>TPL-STACK-{}</member></templates>" \
+                      "<member>TPL-COMMON</member><member>TPL-B-{}</member>" \
+                      "<member>TPL-SK-{}</member></templates>" \
                       "<shared-access>write</shared-access>".format(student_id, student_id, student_id)
     pano.xapi.set(xpath=access_domain_xp, element=access_domain_e)
     print('Built Access Domain: ACD-{}'.format(student_id))

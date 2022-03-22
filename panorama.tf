@@ -3,11 +3,11 @@
 #}
 
 resource "panos_panorama_template" "this" {
-  name = "TPL-BASE-${var.vm_user}"
+  name = "TPL-B-${var.vm_user}"
 }
 
 resource "panos_panorama_template_stack" "this" {
-  name        = "TPL-STACK-${var.vm_user}"
+  name        = "TPL-SK-${var.vm_user}"
   description = "Student Template Stack ${var.vm_user}"
   templates   = [panos_panorama_template.this.name]
 }
