@@ -45,7 +45,7 @@ resource "panos_panorama_ethernet_interface" "eth2" {
   template                  = panos_panorama_template.this.name
   mode                      = "layer3"
   enable_dhcp               = true
-  create_dhcp_default_route = true
+  create_dhcp_default_route = false
   dhcp_default_route_metric = 10
   management_profile        = panos_panorama_management_profile.healthcheck.name
 }
@@ -57,6 +57,44 @@ resource "panos_panorama_zone" "trust" {
   interfaces = [
     panos_panorama_ethernet_interface.eth2.name
   ]
+}
+
+resource "panos_panorama_static_route_ipv4" "hc1" {
+  destination    = "35.191.0.0/16"
+  name           = "hc1"
+  next_hop       = panos_panorama_template_variable.next-hop-gw.name
+  type           = "ip-address"
+  virtual_router = panos_panorama_template.this.name
+}
+
+resource "panos_panorama_static_route_ipv4" "hc2" {
+  destination    = "130.211.0.0/22"
+  name           = "hc2"
+  next_hop       = panos_panorama_template_variable.next-hop-gw.name
+  type           = "ip-address"
+  virtual_router = panos_panorama_template.this.name
+}
+
+resource "panos_panorama_static_route_ipv4" "spokes" {
+  destination    = "10.0.0.0/8"
+  name           = "spokes"
+  next_hop       = panos_panorama_template_variable.next-hop-gw.name
+  type           = "ip-address"
+  virtual_router = panos_panorama_template.this.name
+}
+
+resource "panos_panorama_template_variable" "next-hop-ilb" {
+  template = panos_panorama_template.this.name
+  name     = "$nexthopilb"
+  type     = "ip-address"
+  value    = "10.1.1.1/24"
+}
+
+resource "panos_panorama_template_variable" "next-hop-gw" {
+  template = panos_panorama_template.this.name
+  name     = "$nexthopgw"
+  type     = "ip-address"
+  value    = "10.2.2.1/24"
 }
 
 resource "panos_panorama_virtual_router" "example" {
@@ -74,6 +112,88 @@ resource "panos_panorama_management_profile" "healthcheck" {
   template      = panos_panorama_template.this.name
   permitted_ips = ["130.211.0.0/22", "35.191.0.0/16"]
   https         = true
+}
+
+resource "panos_panorama_nat_rule_group" "out-all" {
+  rule {
+    name = ""
+    original_packet {
+      destination_addresses = []
+      destination_zone      = panos_panorama_zone.untrust.name
+      source_addresses      = []
+      source_zones          = [panos_panorama_zone.trust.name]
+    }
+    translated_packet {
+      destination {
+      }
+      source {
+        dynamic_ip_and_port {
+          interface_address {
+            interface  = "ethernet1/1"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+resource "panos_panorama_nat_rule_group" "us-east-1-nat" {
+  rule {
+    name = ""
+    original_packet {
+      destination_addresses = []
+      destination_zone      = panos_panorama_zone.untrust
+      source_addresses      = []
+      source_zones          = [panos_panorama_zone.untrust]
+      service               = "tcp-220"
+    }
+    translated_packet {
+      destination {
+        dynamic_translation {
+          address      = "10.0.3.10"
+          port         = "22"
+          distribution = "round-robin"
+        }
+      }
+      source {
+        dynamic_ip_and_port {
+          interface_address {
+            interface  = "ethernet1/2"
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "panos_panorama_nat_rule_group" "us-west-1-nat" {
+  rule {
+    name = ""
+    original_packet {
+      destination_addresses = []
+      destination_zone      = panos_panorama_zone.untrust
+      source_addresses      = []
+      source_zones          = [panos_panorama_zone.untrust]
+      service               = "tcp-221"
+    }
+    translated_packet {
+      destination {
+        dynamic_translation {
+          address      = "10.0.4.26"
+          port         = "22"
+          distribution = "round-robin"
+        }
+      }
+      source {
+        dynamic_ip_and_port {
+          interface_address {
+            interface  = "ethernet1/2"
+          }
+        }
+      }
+    }
+  }
 }
 
 resource "panos_panorama_security_rule_group" "this" {

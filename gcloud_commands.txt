@@ -1,0 +1,50 @@
+gcloud compute networks peerings create to-spoke1 --network=trust-vpc --peer-network=spoke1-vpc \
+--export-custom-routes --import-custom-routes
+
+gcloud compute networks peerings create from-spoke1 --network=spoke1-vpc --peer-network=trust-vpc \
+--export-custom-routes --import-custom-routes
+
+gcloud compute networks peerings create to-spoke2 --network=trust-vpc --peer-network=spoke2-vpc \
+--export-custom-routes --import-custom-routes
+
+gcloud compute networks peerings create from-spoke2 --network=spoke2-vpc --peer-network=trust-vpc \
+--export-custom-routes --import-custom-routes
+
+# Must find ILB Frontend IPs
+
+gcloud compute routes create default-us-east-1 \
+   --network=spoke1-vpc \
+   --destination-range=0.0.0.0/0 \
+   --next-hop-ilb=10.0.2.3 \
+   --priority=100 \
+   --tags=us-east-1
+
+gcloud compute routes create default-us-east-1 \
+   --network=trust-vpc \
+   --destination-range=0.0.0.0/0 \
+   --next-hop-ilb=10.0.2.3 \
+   --priority=100 \
+   --tags=us-east-1
+
+gcloud compute routes create default-us-west-1 \
+   --network=spoke2-vpc \
+   --destination-range=0.0.0.0/0 \
+   --next-hop-ilb=10.0.2.19 \
+   --priority=100 \
+   --tags=us-west-1
+
+gcloud compute routes create default-us-west-1 \
+   --network=trust-vpc \
+   --destination-range=0.0.0.0/0 \
+   --next-hop-ilb=10.0.2.19 \
+   --priority=100 \
+   --tags=us-west-1
+
+## Zones Can Change
+gcloud compute instances add-tags us-east1-vm \
+    --zone us-east1-b \
+    --tags us-east-1
+
+gcloud compute instances add-tags us-west1-vm \
+    --zone us-west1-a \
+    --tags us-west-1
