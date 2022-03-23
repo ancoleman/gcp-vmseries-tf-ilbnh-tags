@@ -64,7 +64,7 @@ resource "panos_panorama_static_route_ipv4" "hc1" {
   name           = "hc1"
   next_hop       = panos_panorama_template_variable.next-hop-gw.name
   type           = "ip-address"
-  virtual_router = panos_panorama_template.this.name
+  virtual_router = panos_panorama_virtual_router.example.name
   template       = panos_panorama_template.this.name
 }
 
@@ -73,7 +73,7 @@ resource "panos_panorama_static_route_ipv4" "hc2" {
   name           = "hc2"
   next_hop       = panos_panorama_template_variable.next-hop-gw.name
   type           = "ip-address"
-  virtual_router = panos_panorama_template.this.name
+  virtual_router = panos_panorama_virtual_router.example.name
   template       = panos_panorama_template.this.name
 }
 
@@ -82,7 +82,7 @@ resource "panos_panorama_static_route_ipv4" "spokes" {
   name           = "spokes"
   next_hop       = panos_panorama_template_variable.next-hop-gw.name
   type           = "ip-address"
-  virtual_router = panos_panorama_template.this.name
+  virtual_router = panos_panorama_virtual_router.example.name
   template       = panos_panorama_template.this.name
 }
 
