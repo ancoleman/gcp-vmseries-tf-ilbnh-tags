@@ -118,9 +118,9 @@ resource "panos_panorama_nat_rule_group" "out-all" {
   rule {
     name = ""
     original_packet {
-      destination_addresses = []
+      destination_addresses = ["any"]
       destination_zone      = panos_panorama_zone.untrust.name
-      source_addresses      = []
+      source_addresses      = ["any"]
       source_zones          = [panos_panorama_zone.trust.name]
     }
     translated_packet {
@@ -142,10 +142,10 @@ resource "panos_panorama_nat_rule_group" "us-east-1-nat" {
   rule {
     name = ""
     original_packet {
-      destination_addresses = []
-      destination_zone      = panos_panorama_zone.untrust
-      source_addresses      = []
-      source_zones          = [panos_panorama_zone.untrust]
+      destination_addresses = ["any"]
+      destination_zone      = panos_panorama_zone.untrust.name
+      source_addresses      = ["any"]
+      source_zones          = [panos_panorama_zone.untrust.name]
       service               = "tcp-220"
     }
     translated_packet {
@@ -171,10 +171,10 @@ resource "panos_panorama_nat_rule_group" "us-west-1-nat" {
   rule {
     name = ""
     original_packet {
-      destination_addresses = []
-      destination_zone      = panos_panorama_zone.untrust
-      source_addresses      = []
-      source_zones          = [panos_panorama_zone.untrust]
+      destination_addresses = ["any"]
+      destination_zone      = panos_panorama_zone.untrust.name
+      source_addresses      = ["any"]
+      source_zones          = [panos_panorama_zone.untrust.name]
       service               = "tcp-221"
     }
     translated_packet {
