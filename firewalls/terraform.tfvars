@@ -1,6 +1,6 @@
 
-#public_key_path           = "~/.ssh/gcp-demo.pub"
-fw_image_name = "vmseries-flex-byol-1013"
+public_key_path = "./vm-creds.pub"
+fw_image_name   = "vmseries-flex-byol-1013"
 
 mgmt_sources  = ["0.0.0.0/0"]
 regions       = ["us-east1", "us-west1"]
