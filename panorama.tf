@@ -86,14 +86,14 @@ resource "panos_panorama_static_route_ipv4" "spokes" {
 resource "panos_panorama_template_variable" "next-hop-ilb" {
   template = panos_panorama_template.this.name
   name     = "$nexthopilb"
-  type     = "ip-address"
+  type     = "ip-netmask"
   value    = "10.1.1.1/24"
 }
 
 resource "panos_panorama_template_variable" "next-hop-gw" {
   template = panos_panorama_template.this.name
   name     = "$nexthopgw"
-  type     = "ip-address"
+  type     = "ip-netmask"
   value    = "10.2.2.1/24"
 }
 
