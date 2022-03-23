@@ -65,6 +65,7 @@ resource "panos_panorama_static_route_ipv4" "hc1" {
   next_hop       = panos_panorama_template_variable.next-hop-gw.name
   type           = "ip-address"
   virtual_router = panos_panorama_template.this.name
+  template       = panos_panorama_template.this.name
 }
 
 resource "panos_panorama_static_route_ipv4" "hc2" {
@@ -73,6 +74,7 @@ resource "panos_panorama_static_route_ipv4" "hc2" {
   next_hop       = panos_panorama_template_variable.next-hop-gw.name
   type           = "ip-address"
   virtual_router = panos_panorama_template.this.name
+  template       = panos_panorama_template.this.name
 }
 
 resource "panos_panorama_static_route_ipv4" "spokes" {
@@ -81,6 +83,7 @@ resource "panos_panorama_static_route_ipv4" "spokes" {
   next_hop       = panos_panorama_template_variable.next-hop-gw.name
   type           = "ip-address"
   virtual_router = panos_panorama_template.this.name
+  template       = panos_panorama_template.this.name
 }
 
 resource "panos_panorama_template_variable" "next-hop-ilb" {
@@ -116,7 +119,7 @@ resource "panos_panorama_management_profile" "healthcheck" {
 
 resource "panos_panorama_nat_rule_group" "out-all" {
   rule {
-    name = ""
+    name = "out-all"
     original_packet {
       destination_addresses = ["any"]
       destination_zone      = panos_panorama_zone.untrust.name
@@ -129,7 +132,7 @@ resource "panos_panorama_nat_rule_group" "out-all" {
       source {
         dynamic_ip_and_port {
           interface_address {
-            interface  = "ethernet1/1"
+            interface = "ethernet1/1"
           }
         }
       }
@@ -140,7 +143,7 @@ resource "panos_panorama_nat_rule_group" "out-all" {
 
 resource "panos_panorama_nat_rule_group" "us-east-1-nat" {
   rule {
-    name = ""
+    name = "us-east-1-nat"
     original_packet {
       destination_addresses = ["any"]
       destination_zone      = panos_panorama_zone.untrust.name
@@ -159,7 +162,7 @@ resource "panos_panorama_nat_rule_group" "us-east-1-nat" {
       source {
         dynamic_ip_and_port {
           interface_address {
-            interface  = "ethernet1/2"
+            interface = "ethernet1/2"
           }
         }
       }
@@ -169,7 +172,7 @@ resource "panos_panorama_nat_rule_group" "us-east-1-nat" {
 
 resource "panos_panorama_nat_rule_group" "us-west-1-nat" {
   rule {
-    name = ""
+    name = "us-west-1-nat"
     original_packet {
       destination_addresses = ["any"]
       destination_zone      = panos_panorama_zone.untrust.name
@@ -188,7 +191,7 @@ resource "panos_panorama_nat_rule_group" "us-west-1-nat" {
       source {
         dynamic_ip_and_port {
           interface_address {
-            interface  = "ethernet1/2"
+            interface = "ethernet1/2"
           }
         }
       }
