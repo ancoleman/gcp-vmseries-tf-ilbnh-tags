@@ -17,10 +17,10 @@ module "vmseries_region0" {
   project_id               = data.google_client_config.main.project
 
   metadata = {
-    mgmt-interface-swap                  = "enable"
     serial-port-enable                   = true
     ssh-keys                             = fileexists(var.public_key_path) ? "admin:${file(var.public_key_path)}" : ""
     type                                 = "dhcp-client"
+    op-command-modes                     = "mgmt-interface-swap"
     plugin-op-commands                   = "panorama-licensing-mode-on"
     auth-key                             = var.sft_license_auth_key
     panorama-server                      = var.panorama_host
