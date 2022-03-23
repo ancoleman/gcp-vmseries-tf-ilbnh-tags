@@ -62,7 +62,7 @@ module "vpc_spoke1" {
   vpc                  = "spoke1-vpc"
   delete_default_route = true
   allowed_sources      = ["0.0.0.0/0"]
-  denied_dest      = ["0.0.0.0/0"]
+  denied_dest          = ["0.0.0.0/0"]
 
   subnets = {
     "spoke1-${var.regions[0]}" = {
@@ -81,6 +81,7 @@ module "vpc_spoke2" {
   vpc                  = "spoke2-vpc"
   delete_default_route = true
   allowed_sources      = ["0.0.0.0/0"]
+  denied_dest          = ["0.0.0.0/0"]
 
   subnets = {
     "spoke2-${var.regions[0]}" = {
