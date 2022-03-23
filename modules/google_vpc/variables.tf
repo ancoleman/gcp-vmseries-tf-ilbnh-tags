@@ -11,6 +11,11 @@ variable "allowed_sources" {
   default = []
 }
 
+variable "denied_dest" {
+  type    = list(string)
+  default = []
+}
+
 variable "allowed_protocol" {
   default = "all"
 }

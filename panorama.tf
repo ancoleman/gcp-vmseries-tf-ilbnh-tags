@@ -120,28 +120,30 @@ resource "panos_panorama_management_profile" "healthcheck" {
   https         = true
 }
 
-resource "panos_panorama_nat_rule_group" "out-all" {
-  rule {
-    name = "out-all"
-    original_packet {
-      destination_addresses = ["any"]
-      destination_zone      = panos_panorama_zone.untrust.name
-      source_addresses      = ["any"]
-      source_zones          = [panos_panorama_zone.trust.name]
-    }
-    translated_packet {
-      destination {
-      }
-      source {
-        dynamic_ip_and_port {
-          interface_address {
-            interface = "ethernet1/1"
-          }
-        }
-      }
-    }
-  }
-}
+#Break Egress
+
+#resource "panos_panorama_nat_rule_group" "out-all" {
+#  rule {
+#    name = "out-all"
+#    original_packet {
+#      destination_addresses = ["any"]
+#      destination_zone      = panos_panorama_zone.untrust.name
+#      source_addresses      = ["any"]
+#      source_zones          = [panos_panorama_zone.trust.name]
+#    }
+#    translated_packet {
+#      destination {
+#      }
+#      source {
+#        dynamic_ip_and_port {
+#          interface_address {
+#            interface = "ethernet1/1"
+#          }
+#        }
+#      }
+#    }
+#  }
+#}
 
 
 resource "panos_panorama_nat_rule_group" "us-east-1-nat" {

@@ -18,11 +18,24 @@ resource "google_compute_firewall" "main" {
   }
 }
 
+resource "google_compute_firewall" "egress_deny" {
+  count              = length(var.denied_dest) != 0 ? 1 : 0
+  name               = "${google_compute_network.main.name}-egress"
+  network            = google_compute_network.main.self_link
+  direction          = "EGRESS"
+  destination_ranges = var.denied_dest
+
+  deny {
+    protocol = var.allowed_protocol
+    ports    = var.allowed_ports
+  }
+}
+
 
 resource "google_compute_subnetwork" "main" {
   for_each = var.subnets
 
-  name = format("%s", "${each.key}")
+  name          = format("%s", "${each.key}")
   network       = google_compute_network.main.self_link
   region        = each.value["region"]
   ip_cidr_range = each.value["cidr"]
