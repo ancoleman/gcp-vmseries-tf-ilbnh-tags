@@ -220,6 +220,28 @@ resource "panos_panorama_nat_rule_group" "us-west-1-nat" {
   }
 }
 
+resource "panos_address_object" "gcp-health-check-1" {
+    name = "gcp-health-check-1"
+    value = "130.211.0.0/22"
+    description = "GCP Load Balancer Source Range"
+}
+
+resource "panos_address_object" "gcp-health-check-2" {
+    name = "gcp-health-check-2"
+    value = "35.191.0.0/16"
+    description = "GCP Load Balancer Source Range"
+}
+
+resource "panos_address_group" "gcp-health-check" {
+    name = "gcp-healthchecks"
+    description = "MGCP Load Balancer Source Ranges"
+    static_addresses = [
+        panos_address_object.gcp-health-check-1.name,
+        panos_address_object.gcp-health-check-2.name,
+    ]
+}
+
+
 resource "panos_panorama_security_rule_group" "this" {
   position_keyword   = "before"
   position_reference = panos_panorama_security_rule_group.deny.rule.0.name
@@ -228,7 +250,7 @@ resource "panos_panorama_security_rule_group" "this" {
     name                  = "gcp-health-checks"
     description           = "LB Healthchecks"
     source_zones          = [panos_panorama_zone.trust.name]
-    source_addresses      = ["gcp_healthchecks"]
+    source_addresses      = [panos_address_group.gcp-health-check.name]
     source_users          = ["any"]
     hip_profiles          = ["any"]
     destination_zones     = ["any"]
