@@ -145,8 +145,16 @@ resource "panos_panorama_management_profile" "healthcheck" {
 #  }
 #}
 
+resource "panos_panorama_service_object" "tcp220" {
+    name = "tcp-220"
+    protocol = "tcp"
+    description = "us-east-1-nat SSH TCP 220"
+    destination_port = "220"
+}
+
 
 resource "panos_panorama_nat_rule_group" "us-east-1-nat" {
+  device_group       = panos_device_group.this.name
   rule {
     name = "us-east-1-nat"
     original_packet {
@@ -154,7 +162,7 @@ resource "panos_panorama_nat_rule_group" "us-east-1-nat" {
       destination_zone      = panos_panorama_zone.untrust.name
       source_addresses      = ["any"]
       source_zones          = [panos_panorama_zone.untrust.name]
-      service               = "tcp-220"
+      service               = panos_panorama_service_object.tcp220.name
     }
     translated_packet {
       destination {
@@ -175,7 +183,15 @@ resource "panos_panorama_nat_rule_group" "us-east-1-nat" {
   }
 }
 
+resource "panos_panorama_service_object" "tcp221" {
+    name = "tcp-221"
+    protocol = "tcp"
+    description = "us-west-1-nat SSH TCP 221"
+    destination_port = "221"
+}
+
 resource "panos_panorama_nat_rule_group" "us-west-1-nat" {
+  device_group       = panos_device_group.this.name
   rule {
     name = "us-west-1-nat"
     original_packet {
@@ -183,7 +199,7 @@ resource "panos_panorama_nat_rule_group" "us-west-1-nat" {
       destination_zone      = panos_panorama_zone.untrust.name
       source_addresses      = ["any"]
       source_zones          = [panos_panorama_zone.untrust.name]
-      service               = "tcp-221"
+      service               = panos_panorama_service_object.tcp221.name
     }
     translated_packet {
       destination {
