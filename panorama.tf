@@ -146,6 +146,7 @@ resource "panos_panorama_management_profile" "healthcheck" {
 #}
 
 resource "panos_panorama_service_object" "tcp220" {
+    device_group       = panos_device_group.this.name
     name = "tcp-220"
     protocol = "tcp"
     description = "us-east-1-nat SSH TCP 220"
@@ -184,6 +185,7 @@ resource "panos_panorama_nat_rule_group" "us-east-1-nat" {
 }
 
 resource "panos_panorama_service_object" "tcp221" {
+    device_group       = panos_device_group.this.name
     name = "tcp-221"
     protocol = "tcp"
     description = "us-west-1-nat SSH TCP 221"
@@ -221,18 +223,21 @@ resource "panos_panorama_nat_rule_group" "us-west-1-nat" {
 }
 
 resource "panos_panorama_address_object" "gcp-health-check-1" {
+    device_group       = panos_device_group.this.name
     name = "gcp-health-check-1"
     value = "130.211.0.0/22"
     description = "GCP Load Balancer Source Range"
 }
 
 resource "panos_panorama_address_object" "gcp-health-check-2" {
+    device_group       = panos_device_group.this.name
     name = "gcp-health-check-2"
     value = "35.191.0.0/16"
     description = "GCP Load Balancer Source Range"
 }
 
 resource "panos_panorama_address_group" "gcp-health-check" {
+    device_group       = panos_device_group.this.name
     name = "gcp-healthchecks"
     description = "MGCP Load Balancer Source Ranges"
     static_addresses = [
