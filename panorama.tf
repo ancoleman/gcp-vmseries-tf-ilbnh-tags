@@ -298,46 +298,26 @@ resource "panos_security_rule_group" "this" {
   }
 }
 
-# resource "panos_panorama_security_rule_group" "deny" {
-#   position_keyword = "bottom"
-#   device_group     = panos_device_group.this.name
-#   rule {
-#     name                  = "deny-all"
-#     description           = "Deny All"
-#     source_zones          = ["any"]
-#     source_addresses      = ["any"]
-#     source_users          = ["any"]
-#     hip_profiles          = ["any"]
-#     destination_zones     = ["any"]
-#     destination_addresses = ["any"]
-#     applications          = ["any"]
-#     services              = ["any"]
-#     categories            = ["any"]
-#     action                = "deny"
-#     log_setting           = "default"
-#   }
-# }
 
 resource "panos_security_rule_group" "deny" {
     position_keyword = "bottom"
     device_group     = panos_device_group.this.name
     rule {
-      name                  = "deny-all"
-      description           = "Deny All"
-      source_zones          = ["any"]
-      source_addresses      = ["any"]
-      source_users          = ["any"]
-      hip_profiles          = ["any"]
-      destination_zones     = ["any"]
-      destination_addresses = ["any"]
-      applications          = ["any"]
-      services              = ["any"]
-      categories            = ["any"]
-      action                = "deny"
-      log_setting           = "default"
+        name = "Deny everything else"
+        audit_comment = "Initial config"
+        source_zones = ["any"]
+        source_addresses = ["any"]
+        source_users = ["any"]
+        hip_profiles = ["any"]
+        destination_zones = ["any"]
+        destination_addresses = ["any"]
+        applications = ["any"]
+        services = ["any"]
+        categories = ["any"]
+        action = "deny"
+        log_setting           = "default"
     }
 }
-
 
 output "lab_info" {
   value = {
