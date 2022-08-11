@@ -3,7 +3,7 @@ public_key_path = "./vm-creds.pub"
 fw_image_name   = "vmseries-flex-byol-1013"
 
 mgmt_sources  = ["0.0.0.0/0"]
-regions       = ["us-east1", "us-cental1"]
+regions       = ["us-east1", "us-central1"]
 cidrs_mgmt    = ["10.0.0.0/28", "10.0.0.16/28"]
 cidrs_untrust = ["10.0.1.0/28", "10.0.1.16/28"]
 cidrs_trust   = ["10.0.2.0/28", "10.0.2.16/28"]
