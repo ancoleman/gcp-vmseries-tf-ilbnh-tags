@@ -257,7 +257,7 @@ resource "panos_security_rule_group" "this" {
     source_zones          = [panos_panorama_zone.trust.name]
     source_addresses      = [panos_panorama_address_group.gcp-health-check.name]
     source_users          = ["any"]
-    hip_profiles          = ["any"]
+    #hip_profiles          = ["any"]
     destination_zones     = ["any"]
     destination_addresses = ["any"]
     applications          = ["any"]
@@ -272,7 +272,7 @@ resource "panos_security_rule_group" "this" {
     source_zones          = [panos_panorama_zone.trust.name]
     source_addresses      = ["any"]
     source_users          = ["any"]
-    hip_profiles          = ["any"]
+    #hip_profiles          = ["any"]
     destination_zones     = [panos_panorama_zone.untrust.name]
     destination_addresses = ["any"]
     applications          = ["any"]
@@ -287,7 +287,7 @@ resource "panos_security_rule_group" "this" {
     source_zones          = [panos_panorama_zone.untrust.name]
     source_addresses      = ["any"]
     source_users          = ["any"]
-    hip_profiles          = ["any"]
+    #hip_profiles          = ["any"]
     destination_zones     = [panos_panorama_zone.trust.name]
     destination_addresses = ["any"]
     applications          = ["ssh", "web-browsing"]
@@ -298,46 +298,26 @@ resource "panos_security_rule_group" "this" {
   }
 }
 
-# resource "panos_panorama_security_rule_group" "deny" {
-#   position_keyword = "bottom"
-#   device_group     = panos_device_group.this.name
-#   rule {
-#     name                  = "deny-all"
-#     description           = "Deny All"
-#     source_zones          = ["any"]
-#     source_addresses      = ["any"]
-#     source_users          = ["any"]
-#     hip_profiles          = ["any"]
-#     destination_zones     = ["any"]
-#     destination_addresses = ["any"]
-#     applications          = ["any"]
-#     services              = ["any"]
-#     categories            = ["any"]
-#     action                = "deny"
-#     log_setting           = "default"
-#   }
-# }
 
 resource "panos_security_rule_group" "deny" {
     position_keyword = "bottom"
     device_group     = panos_device_group.this.name
     rule {
-      name                  = "deny-all"
-      description           = "Deny All"
-      source_zones          = ["any"]
-      source_addresses      = ["any"]
-      source_users          = ["any"]
-      hip_profiles          = ["any"]
-      destination_zones     = ["any"]
-      destination_addresses = ["any"]
-      applications          = ["any"]
-      services              = ["any"]
-      categories            = ["any"]
-      action                = "deny"
-      log_setting           = "default"
+        name = "deny-any"
+        audit_comment = "Initial config"
+        source_zones = ["any"]
+        source_addresses = ["any"]
+        source_users = ["any"]
+        #hip_profiles = ["any"]
+        destination_zones = ["any"]
+        destination_addresses = ["any"]
+        applications = ["any"]
+        services = ["any"]
+        categories = ["any"]
+        action = "deny"
+        log_setting           = "default"
     }
 }
-
 
 output "lab_info" {
   value = {
