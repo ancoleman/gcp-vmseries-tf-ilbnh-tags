@@ -10,7 +10,7 @@ cidrs_trust   = ["10.0.2.0/28", "10.0.2.16/28"]
 
 fw_machine_type = "n1-standard-4"
 
-panorama_host        = "3.138.239.111"
+panorama_host        = ""
 dg_name              = ""
 tmpl_stck_name       = ""
 sft_license_auth_key = ""
