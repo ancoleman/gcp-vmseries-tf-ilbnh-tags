@@ -247,9 +247,9 @@ resource "panos_panorama_address_group" "gcp-health-check" {
 }
 
 
-resource "panos_panorama_security_rule_group" "this" {
+resource "panos_security_rule_group" "this" {
   position_keyword   = "before"
-  position_reference = panos_panorama_security_rule_group.deny.rule.0.name
+  position_reference = panos_security_rule_group.deny.rule.0.name
   device_group       = panos_device_group.this.name
   rule {
     name                  = "gcp-health-checks"
@@ -298,24 +298,44 @@ resource "panos_panorama_security_rule_group" "this" {
   }
 }
 
-resource "panos_panorama_security_rule_group" "deny" {
-  position_keyword = "bottom"
-  device_group     = panos_device_group.this.name
-  rule {
-    name                  = "deny-all"
-    description           = "Deny All"
-    source_zones          = ["any"]
-    source_addresses      = ["any"]
-    source_users          = ["any"]
-    hip_profiles          = ["any"]
-    destination_zones     = ["any"]
-    destination_addresses = ["any"]
-    applications          = ["any"]
-    services              = ["any"]
-    categories            = ["any"]
-    action                = "deny"
-    log_setting           = "default"
-  }
+# resource "panos_panorama_security_rule_group" "deny" {
+#   position_keyword = "bottom"
+#   device_group     = panos_device_group.this.name
+#   rule {
+#     name                  = "deny-all"
+#     description           = "Deny All"
+#     source_zones          = ["any"]
+#     source_addresses      = ["any"]
+#     source_users          = ["any"]
+#     hip_profiles          = ["any"]
+#     destination_zones     = ["any"]
+#     destination_addresses = ["any"]
+#     applications          = ["any"]
+#     services              = ["any"]
+#     categories            = ["any"]
+#     action                = "deny"
+#     log_setting           = "default"
+#   }
+# }
+
+resource "panos_security_rule_group" "deny" {
+    position_keyword = "bottom"
+    device_group     = panos_device_group.this.name
+    rule {
+      name                  = "deny-all"
+      description           = "Deny All"
+      source_zones          = ["any"]
+      source_addresses      = ["any"]
+      source_users          = ["any"]
+      hip_profiles          = ["any"]
+      destination_zones     = ["any"]
+      destination_addresses = ["any"]
+      applications          = ["any"]
+      services              = ["any"]
+      categories            = ["any"]
+      action                = "deny"
+      log_setting           = "default"
+    }
 }
 
 
