@@ -5,15 +5,15 @@ resource "google_compute_address" "public" {
 }
 
 resource "google_compute_disk" "logging" {
-  name = each.value.name
+  name = "panorama-logging-disk"
   zone = data.google_compute_zones.region1.names[0]
   type = "pd-ssd"
   size = 2000
 }
 
 resource "google_compute_attached_disk" "default" {
-  disk     = google_compute_disk.this[each.key].id
-  instance = google_compute_instance.this.id
+  disk     = google_compute_disk.logging.id
+  instance = google_compute_instance.panorama.id
 }
 
 resource "google_compute_instance" "panorama" {
