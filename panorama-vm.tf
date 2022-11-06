@@ -1,13 +1,13 @@
 # Permanent public address, not ephemeral.
 resource "google_compute_address" "public" {
-  region  = var.regions[1]
+  region  = var.regions[2]
   name    = "panorama-public"
 }
 
 resource "google_compute_disk" "logging" {
   name = "panorama-logging-disk"
-  zone = data.google_compute_zones.region1.names[0]
-  type = "pd-ssd"
+  zone = data.google_compute_zones.region2.names[0]
+  type = "pd-standard"
   size = 2000
 }
 
@@ -19,7 +19,7 @@ resource "google_compute_attached_disk" "default" {
 resource "google_compute_instance" "panorama" {
   name                      = "lab-panorama"
   machine_type              = "n1-standard-16"
-  zone                      = data.google_compute_zones.region1.names[0]
+  zone                      = data.google_compute_zones.region2.names[0]
   can_ip_forward            = false
   allow_stopping_for_update = true
 
@@ -30,7 +30,7 @@ resource "google_compute_instance" "panorama" {
 
   network_interface {
     #    subnetwork = module.vpc_trust.subnet_self_link["trust-${var.regions[0]}"]
-    subnetwork = module.vpc_mgmt.subnet_self_link["mgmt-${var.regions[1]}"]
+    subnetwork = module.vpc_mgmt.subnet_self_link["mgmt-${var.regions[2]}"]
     
     access_config {
         nat_ip = google_compute_address.public.address

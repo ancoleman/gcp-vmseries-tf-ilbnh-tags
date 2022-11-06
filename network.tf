@@ -18,6 +18,10 @@ module "vpc_mgmt" {
       region = var.regions[1],
       cidr   = var.cidrs_mgmt[1]
     }
+    "mgmt-${var.regions[2]}" = {
+      region = var.regions[2],
+      cidr   = var.cidrs_mgmt[2]
+    }
   }
 }
 
